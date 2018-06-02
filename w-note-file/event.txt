@@ -1,0 +1,7 @@
+1、passive: true(el.addEventListener(type, handle, {passive: true}))
+   是用于让原生滚动更流畅
+
+2、scroll事件的异常触发
+   当wrapper的scrollTop大于0时(即有滚动条，且向下滑动过和overflow：auto)
+   如果改变scroller的高度，致使wrapper的滚动条消失，
+   此时会触发wrapper的scroll事件

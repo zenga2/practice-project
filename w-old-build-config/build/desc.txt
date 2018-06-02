@@ -1,0 +1,17 @@
+1. webpack配置
+2. 创建服务器(express) 和webpack对象
+
+注册各种中间件：
+3. 配置api代理中间件http-proxy-middleware
+4. 配置中间件connect-history-api-fallback(刷新页面时，兼容利用HTML5 history API操作路由的单页应用)
+5. 配置中间件webpack-dev-middleware
+6. 配置中间件webpack-hot-middleware
+
+7. 在html-webpack-plugin-after-emit任务点后刷新页面
+   需要用到webpack-hot-middleware
+   // hotMiddleware.publish({action: 'reload'})
+
+8. 输出一些提示日志同时自动打开浏览器(在打包完成后)
+
+9. 最后启动服务器
+

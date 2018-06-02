@@ -1,0 +1,7 @@
+1、readyState === 4 等同于 onloadend事件
+
+2、任何请求最后只会触发onload,onabort,ontimeout,onerror中之一,
+   然后就触发onloadend,标志本次请求结束
+
+3、xhr.upload的onprogress(上传)和xhr的onprogress(下载)都有问题，不适合用作进度指示
+   前者是不能以均匀的时间间隔触发事件，后者是gzip后total就没有值了

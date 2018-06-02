@@ -1,0 +1,37 @@
+1. if左值是须加双引号
+   rem 正确
+   if("%str1%"=="xxx")
+
+   rem 错误
+   if(%str1%=="xxx")
+
+2. ELSE子句必须出现在同一行上的 IF 之后
+   set isCopy=f
+
+   rem 下面两个语法正确
+   if "%isCopy%"=="true" (
+          echo 'Hello'
+   ) else "%isCopy%"=="f" (
+      echo 'jshgjsgjshg'
+   )
+
+   if "%isCopy%"=="true" (
+       echo 'Hello'
+   ) else if "%isCopy%"=="f" (
+       echo 'jshgjsgjshg'
+   )
+
+   rem 下面两个语法错误，错在ELSE子句换行了
+   if "%isCopy%"=="true" (
+       echo 'Hello'
+   )
+   else "%isCopy%"=="f" (
+       echo 'jshgjsgjshg'
+   )
+
+   if "%isCopy%"=="true" (
+       echo 'Hello'
+   )
+   else if "%isCopy%"=="f" (
+       echo 'jshgjsgjshg'
+   )

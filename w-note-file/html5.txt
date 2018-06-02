@@ -1,0 +1,19 @@
+1. drap-and-drop事件
+   1) 默认情况下，目标元素是不允许被放置的，所以不会发生drop事件
+      只要在dragover事件中阻止默认行为，才能成为被允许的放置目标，才能允许发生drop事件
+      e.g.
+      el.addEventListener('dragover', e => {
+         // 阻止默认动作，这样才会可能触发drop事件
+         e.preventDefault()
+         // todo somthing
+      })
+      el.addEventListener('dragover', e => {
+      // 阻止默认动作（如打开一些元素的链接）
+         e.preventDefault()
+         // todo somthing
+         // 获取拖拽的文件对象
+         var files =  e.dataTransfer.files
+      })
+
+   2) dragover与touchmove和mousemove一样会被连续触发
+

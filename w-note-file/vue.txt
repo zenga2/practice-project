@@ -1,0 +1,76 @@
+1. 显性的过渡持续时间
+   可以用 <transition> 组件上的 duration 属性定制一个显性的过渡持续时间 (以毫秒计)：
+   <transition :duration="1000">...</transition>
+   <transition :duration="{ enter: 500, leave: 800 }">...</transition>
+   这个也会屏蔽掉一些过滤机制(因为没有时，只有相应的类和属性满足一定条件，才会启用过度效果)
+
+2. Vue指令
+   调用bind钩子函数时，el(目标元素)已创建，但是未插入到document中，
+   所以el可以访问子元素和后代元素， 但访问不了父元素和祖先元素,
+   要访问祖先元素，就把该操作放到inserted函数中
+
+   update和componentUpdated不同只在调用的时间不同
+   update：所在组件的 VNode 更新时调用，但是可能发生在其孩子的 VNode 更新之前。
+   componentUpdated：所在组件的 VNode 及其孩子的 VNode 全部更新时调用
+   即componentUpdated总是在update之后调用
+
+   unbind：只调用一次，指令与元素解绑时调用。(即指令所在的元素被销毁时)
+
+3. 给子组件绑定属性(require Object)
+   <template>
+     <div>
+       <selectbox
+           ref="selectbox"
+           :dataList="dataList"
+           :value="{value:10}"
+           @change="changeInitModule"
+       ></selectbox>
+     </div>
+   </template>
+
+   注意不推荐使用上面这种对象字面量(:value="{value:10}")，
+   推荐使用父组件中声明的属性, 如下：
+   <template>
+        <div>
+          <selectbox
+              ref="selectbox"
+              :dataList="dataList"
+              :value="currItem"
+              @change="changeInitModule"
+          ></selectbox>
+        </div>
+   </template>
+
+   因为使用前者，当组件里每次有属性改变时，表达式{value:10}会重新计算，
+   即value会被赋于一个新的的对象。
+   如果组件里watch了value，那么相应的handler函数就会被调用，这与预期相异。
+   所以不推荐对象字面量这种绑定方式
+
+4. 计算属性依赖检测原理
+   Vue中计算属性的检测逻辑，在属性的getter中执行，
+   当计算属性被访问(不是访问缓存)，即它绑定的函数执行时，如果getter中有访问其它属性(也意味着调用各自的getter)
+   这时被访问的其它属性的getter中，会把自己注册为当前计算属性的依赖
+   (内部实现是把当前计算属性添加的自己的订阅列表中)
+
+   注意：
+   1) 添加依赖的过程，在计算属性绑定的函数每次执行时都会重复一次
+   2) 计算属性绑定的函数会在属性第一次访问时调用，以后就只在依赖项变化时执行，其他的都只是访问缓存
+   3) watch判断是否相等使用的===,如果watch的属性的值是plain对象，只有给其赋值另一个对象才会触发调用
+      如果想要只改变对象的属性，就触发调用，需要配置deep
+
+   例如
+   a:undefined,
+   b:undefined,
+   computedProp() {
+      return this.a && this.b
+   }
+
+   当首次访问时，只有a会被当做依赖属性(&&的短路效应)
+   然后this.a = 1, 触发绑定的函数再次执行,这时才会把b当做依赖属性
+   如果在此之前改变b，computedProp绑定的函数是不会执行的
+
+5. <slot>标签
+   最初在 <slot> 标签中的任何内容都被视为备用内容。备用内容在子组件的作用域内编译，
+   在没有要插入的内容时显示备用内容
+
+6. Vue.extend相当于是创建Vue的子类,组件就是用它来生成的

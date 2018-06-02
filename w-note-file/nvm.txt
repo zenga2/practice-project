@@ -1,0 +1,4 @@
+1. 重启终端失效(运行如下命令即可)
+   nvm alias default `<version>`
+   e.g.
+   nvm alias default 8.11.1

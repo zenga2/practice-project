@@ -1,0 +1,13 @@
+1、swiper做成循环滑动(在前后各加一个辅助item)
+2、优化picker(修改其惯性滑动的距离,让其一次性滑到某个item)
+3、input输入框trim操作
+4、完善page、page-header page-main page-footer组件(全局注册,同时划清职责)
+5、tap组件(可滑动content切换)
+6、slide动画组件(将date-picker和keyboard动画效果抽离出来)
+7、EChart学习
+8、制作vue源码的结构导图(依据代码目录),同时每个文件实现的功能,最后标注阅读顺序
+9、整理build流程
+10、将build文件改成本地测试、预发布(发布到测试环境)、正式发布三种情形(新增一个变量来控制发布的环境)
+11、新的列表组件(能优化内存占有--删除item的同时修改translateY可实现页面不变[test-remove-some-item-of-list.html]),能在下拉加载时，将最前面的一些item删掉, 上滑填充top部分，删除bottom部分item, 这样节省列表所占的内存。如果不优化的话，随着不断下滑，页面中item越来越多，页面的反应速度会下降，影响用户体验
+12、从new Vue()开始,按照Vue的运行时序来解读源码
+13、将pull-down-up的转圈效果改为css实现

@@ -1,0 +1,8 @@
+1. 浏览器历史记录的算法
+   1) push(newHis)时，看当前节点有没向前的节点(就是否可以forward)，
+   有就用newHis取代所有之前的节点，没有则只是push newHis节点
+   2) back只是简单返回到向后的一个节点
+   3) replace(newHis)只是简单地用newHis替换当前节点
+
+   push可能会删除向前的节点，replace删除当前节点, back只是移动指针
+

@@ -1,0 +1,12 @@
+1、http request时，会自动带上request头部host(host=hostname+端口)
+   指定域以及其祖先域，所保存的所有cookie
+
+   注意:
+     1) 查找cookie判断域名时，所依据的是request头部的host, 与所在页面无关
+     2) 与页面有关的是用js去读取cookie(document.cookie),这时便依据的是当前
+        页面的hostname+端口(浏览器地址栏)
+
+2、Cache-Control
+   1) no-cache：每次请求都向服务器验证资源是否改变，没变化就使用缓存，有就重新从服务器下载资源
+   2) no-store: 它直接禁止浏览器以及所有中间缓存,存储任何版本的返回响应
+     （即每次用户请求资源时，都会向服务器发送请求，并下载完整的响应）

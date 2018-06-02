@@ -1,0 +1,47 @@
+1. 改变数组的原型链,数组的特性依然存在,即它依然是数组，
+   只是少了Array.prototype上的方法. eg:
+   let arr = []
+   arr._proto_ = {}
+   arr.length   // 0
+   arr[0] = 123
+   arr.length   // 1
+
+2. macrotask（又称之为宏任务），可以理解是每次执行栈执行的代码就是一个宏任务
+  （包括每次从事件队列中获取一个事件回调并放到执行栈中执行）每一个task会从头到尾将这个任务执行完毕，
+   不会执行其它.
+   浏览器为了能够使得JS内部task与DOM任务能够有序的执行，
+   会在一个task执行结束后，在下一个 task 执行开始前，对页面进行重新渲染（task->渲染->task->...）
+
+3. microtask（又称为微任务），可以理解是在当前 task 执行结束后立即执行的任务
+   也就是说，在当前task任务后，下一个task之前，在渲染之前
+   所以它的响应速度相比setTimeout（setTimeout是task）会更快，因为无需等渲染
+   也就是说，在某一个macrotask执行完后，就会将在它执行期间产生的所有microtask都执行完毕（在渲染前）
+
+4. 分别什么样的场景会形成macrotask和microtask呢？
+   macrotask：主代码块，setTimeout，setInterval等（可以看到，事件队列中的每一个事件都是一个macrotask）
+   microtask：Promise，process.nextTick等
+   再根据线程来理解下：
+   macrotask中的事件都是放在一个事件队列中的，而这个队列由事件触发线程维护
+   microtask中的所有微任务都是添加到微任务队列（Job Queues）中，等待当前macrotask执行完毕后执行，而这个队列由JS引擎线程维护
+   （这点由自己理解+推测得出，因为它是在主线程下无缝执行的）
+   所以，总结下运行机制：
+   执行一个宏任务（栈中没有就从事件队列中获取）
+   执行过程中如果遇到微任务，就将它添加到微任务的任务队列中
+   宏任务执行完毕后，立即执行当前微任务队列中的所有微任务（依次执行）
+   当前宏任务执行完毕，开始检查渲染，然后GUI线程接管渲染
+   渲染完毕后，JS线程继续接管，开始下一个宏任务（从事件队列中获取）
+
+5. 结合性是指相同的运算符绑定操作数的顺序
+   eg：三目运算符(右结合性)
+   firstCheck ? "Access denied" : secondCheck ? "Access denied" : "Access granted"
+
+   因为三目运算符运算符是右结合性,所以上面代码等效于
+   firstCheck ? "Access denied" : (secondCheck ? "Access denied" : "Access granted")
+   即从右向左，确定三目运算符?:所关联的的操作数
+
+   假设三目运算符是左结合性，则等效于
+   (firstCheck ? "Access denied" : secondCheck) ? "Access denied" : "Access granted"
+
+6. 优先级是不同的运算符绑定操作数的顺序
+
+7. 代码执行的顺序都是从左到右的，与结合性和优先级无关

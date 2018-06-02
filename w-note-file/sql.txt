@@ -1,0 +1,101 @@
+1. DISTINCT关键字去掉重复项，作用于所有的列
+   e.g. SELECT DISTINCT vend_id, prod_price from Products
+
+2. 限制结果
+   1) SQL Server 和 Acces使用TOP关键字
+      e.g. (查询前5条)
+      SELECT TOP 5 prod_name FROM Products
+
+   2) DB2
+      e.g. (查询前5条)
+      SELECT prod_name FROM Products
+      FETCH FIRST 5 ROWS ONLY
+
+   3) Oracle 需要基于 ROWNUM （行计数器）来计算行
+      e.g. (查询前5条)
+      SELECT prod_name FROM Products
+      WHERE ROWNUM <=5
+
+   4) MySQL 、MariaDB 、 PostgreSQL 或者 SQLite 需要使用 LIMIT 子句
+      e.g. (查询前5条)
+      SELECT prod_name FROM Products
+      LIMIT 5
+2. MySQL支持LIMTI语句的简写形式
+   LIMIT 5 OFFSET 10  -- 表示从第11行(包括)开始，查询5条
+   简写形式是 LIMIT 10,5
+
+3. 注释
+   1) --
+   2) #
+   3) /* */
+
+4. ORDER BY 排序子句
+   1) 单列排序
+      e.g.
+      SELECT prod_price, prod_name, prod_desc FROM Products
+      ORDER BY prod_name
+
+   2) 多列排序
+      e.g.(先按prod_name排序，在按prod_desc排)
+      SELECT prod_price, prod_name, prod_desc FROM Products
+      ORDER BY prod_name, prod_desc
+
+   3) 排序方向(默认是升序ASC)  DES：降序
+      DESC(或ASC) 关键字只应用到直接位于其前面的列名
+      e.g.(先按prod_name降序排序，在按prod_desc升序排) (升序可省略,默认就是ASC,这里只是用来展示实例)
+      SELECT prod_price, prod_name, prod_desc FROM Products
+      ORDER BY prod_name DESC, prod_desc ASC
+
+5. 排序时是否区分大小写，由数据库配置决定(设计表时指定)
+
+6. WHERE语句中，判断是否是null,要使用IS NULL语句，!=null是错误的
+   e.g.
+   SELECT prod_name FROM Products
+   WHERE prod_price IS NULL     -- IS NOT NULL(不是null)
+
+7. NULL 和非匹配
+   通过过滤选择不包含指定值的所有行时，你可能希望返回含 NULL 值的行。
+   但是这做不到。因为未知（ unknown ）有特殊的含义，数据库不知
+   道它们是否匹配，所以在进行匹配过滤或非匹配过滤时，不会返回这些结果。
+   过滤数据时，一定要验证被过滤列中含 NULL 的行确实出现在返回的数据中。
+
+8. 通配符 (用在LIKE操作符后)
+   1) % 匹配0,1或多个字符(注意不匹配null)
+   2) _ 匹配单个字符
+
+9. 字符串拼接
+   1) Access和SQL Server使用 +
+      e.g.
+      SELECT prod_name+prod_desc AS description FROM Products
+
+   2) DB2 、 Oracle 、 PostgreSQL 、 SQLite 和 Open Office Base 使用 ||
+      e.g.
+      SELECT prod_name||prod_desc AS description FROM Products
+
+   3) MySQL 、 MariaDB 和 Oracle 使用CONCAT函数
+      e.g.
+      SELECT CONCAT(prod_name, prod_desc) AS description FROM Products
+
+10. COUNT() 函数有两种使用方式：
+    使用 COUNT(*) 对表中行的数目进行计数，不管表列中包含的是空值（ NULL ）还是非空值。
+    使用 COUNT(column) 对特定列中具有值的行进行计数，忽略 NULL 值。
+
+11. 聚集函数
+    AVG() COUNT() MAX() MIN() SUM()
+    除了COUNT(*)外，其他函数都忽略列值为 NULL 的行，包括COUNT(col)
+
+    DISTINCT可用于去掉重复行, 但DISTINCT不能用于 COUNT(*)
+
+12. HAVING用于对分组过滤
+
+13. SELECT 子句及其顺序
+    SELECT
+    FROM
+    WHERE
+    GROUP BY
+    HAVING
+    ORDER BY
+
+14. 在 UPDATE 或 DELETE 语句使用 WHERE 子句前，应该先用 SELECT 进行测试，
+    保证它过滤的是正确的记录，以防编写的 WHERE 子句不正确
+

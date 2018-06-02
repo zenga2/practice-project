@@ -1,0 +1,12 @@
+1、下载blob时，需要指定a.download发，否则不会下载
+    let url = URL.createObjectURL(blob)
+    downloadFile(url, 'dsfghskdghj')
+
+    function downloadFile(url, filename) {
+      let el = document.createElement('a')
+      el.href = url
+      if (filename) {
+        el.download = filename
+      }
+      el.click()
+    }

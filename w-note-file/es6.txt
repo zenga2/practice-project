@@ -1,0 +1,28 @@
+1、ES6 class
+   es6的class是一个语法糖，他是双重的继承:prototype继承和静态属性继承
+   example:
+
+   class A {
+     log() { console.log(42341242) }
+
+     static name = 'wang'
+   }
+
+   class B extends A {}
+
+   与下面代码的功能是一样的
+
+   function A() {}
+   A.prototype.log = function(){ console.log(42341242) }
+   A.name = 'wang'
+
+   function B() {}
+   // 继承实例属性
+   Object.setPrototypeOf(B.prototype, A.prototype)
+   // 继承静态属性
+   Object.setPrototypeOf(B, A)
+
+   B.name === 'wang'  // true
+
+   let b = new B()
+   b.log()            // 42341242

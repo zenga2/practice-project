@@ -1,0 +1,78 @@
+1、跨域不成功的可能解决方法
+   1) Content-Type设置为 'application/x-www-form-urlencoded'
+      最简单就是给data属性传一个string类型的参数
+
+   2) 把withCredentials设置为false，或者不设置(因为默认为false)
+
+2、拦截器执行的顺序
+   1) request拦截器是后注册先执行
+   2) response拦截器是先注册先执行
+   示例：
+      // request拦截器
+      axios.interceptors.request.use(
+        config => {
+          console.log('request success 1')
+          return config
+        },
+        () => console.log('request error 1')
+      )
+      axios.interceptors.request.use(
+        config => {
+          console.log('request success 2')
+          return config
+        },
+        () => console.log('request error 2')
+      )
+      axios.interceptors.request.use(
+        config => {
+          console.log('request success 3')
+          return config
+        },
+        () => console.log('request error 3')
+      )
+
+      // response拦截器
+      axios.interceptors.response.use(
+        response => {
+          console.log('response success 1')
+          return response
+        },
+        (error) => console.log('response error 1', error)
+      )
+      axios.interceptors.response.use(
+        response => {
+          console.log('response success 2')
+          return response
+        },
+        () => console.log('response error 2')
+      )
+      axios.interceptors.response.use(
+        response => {
+          console.log('response success 3')
+          return response
+        },
+        () => console.log('response error 3')
+      )
+
+      axios.post(
+        'http://cnt.imlaidian.com:8099/cntcdt/adminUserBgLogin',
+        'username=zengjun&password=zengjun'
+      ).then(
+        response => {
+          console.log('success', response)
+        },
+        error => {
+          console.log('error', error)
+        }
+      )
+
+   输出结果：
+      request success 3
+      request success 2
+      request success 1
+      response success 1
+      response success 2
+      response success 3
+      success {data: {…}, status: 200, statusText: "OK", headers: {…}, config: {…}, …}
+
+
